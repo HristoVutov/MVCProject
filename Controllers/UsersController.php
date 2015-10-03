@@ -7,6 +7,7 @@
  */
 namespace MVCProject\Controllers;
 
+use MVCProject\Models\Map;
 use MVCProject\View;
 use MVCProject\ViewModels\UserEditViewModel;
 use MVCProject\ViewModels\UserRegisterViewModel;
@@ -19,10 +20,8 @@ class UsersController extends BaseController
 
     public function edit($id, $name)
     {
-        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
-
-        $result = mysqli_query($db , "SELECT * FROM user");
-        while ($row = $result->fetch_assoc()) {
+        $res = User::getAll();
+        while ($row = $res->fetch_assoc()) {
             var_dump($row);
         }
 
@@ -40,7 +39,13 @@ class UsersController extends BaseController
                     if (User::isRegistered($user)) {
                         throw new \Exception('Username already exists');
                     } else {
-                        var_dump(User::tryReg($user, $pass));
+                       if(User::tryReg($user, $pass)){
+                           Map::assignMap();
+                           header("Location: profile.php");
+                           exit;
+                       }else{
+                           throw new \Exception('Error occured during registration');
+                       }
                     }
                 }else{
                     throw new \Exception('All fields required');
@@ -62,10 +67,12 @@ class UsersController extends BaseController
                 htmlspecialchars($user = $_POST['username']);
                 htmlspecialchars($pass = $_POST['password']);
                 if(User::tryLog($user,$pass)){
-                    echo "logged";
+                    $_SESSION['id'] = User::getUser($user)[0];
+                    header("Location: /MVCProject/home/home");
+
                 }
                 else{
-                    echo "wrong pass/name";
+                    throw new \Exception('Wrong Username or Password');
                 }
 
             } catch (Exception $e) {
@@ -75,5 +82,11 @@ class UsersController extends BaseController
 
         $model = new UserRegisterViewModel();
         return new View($model);
+    }
+
+    public function logout(){
+        session_destroy();
+        header("Location: /MVCProject/home/home");
+
     }
 }

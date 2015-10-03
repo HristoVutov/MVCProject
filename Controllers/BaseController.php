@@ -12,15 +12,11 @@ namespace MVCProject\Controllers;
 
 abstract class BaseController
 {
-    private $db;
 
     public function __contruct()
     {
       $this->onInit();
     }
 
-    protected function onInit()
-    {
-
-    }
+    protected function onInit(){}
 }

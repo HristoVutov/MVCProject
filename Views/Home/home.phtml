@@ -1,0 +1,24 @@
+<?php if(empty($_SESSION['id'])): ?>
+<a href="../users/Register">Register</a>
+<a href="../users/login">Login</a>
+<?php else: ?>
+<div>
+    User:
+    <h3><?= self::$data['user']['username'] ?></h3>
+    Nest:  <select name="select_nest">
+        <?php foreach (self::$data['user']['nests'] as $nest): ?>
+             <option value="<?= $nest ?>"><?= $nest ?></option>
+        <?php endforeach; ;?>
+    </select>
+    <br>
+    <br>
+  Water:  <h3><?= self::$data['user']['water_resource'] ?></h3>
+  Food:  <h3><?= self::$data['user']['food_resource'] ?></h3>
+  Dirt: <h3><?= self::$data['user']['dirt_resource'] ?></h3>
+    <hr>
+    <a href="../buildings/barrack">Barracks</a>
+    <a href="../buildings/nest">nest</a>
+    <a href="../map/map">map</a>
+    <a href="../users/logout">logout</a>
+</div>
+<?php endif; ?>

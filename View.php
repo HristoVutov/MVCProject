@@ -14,7 +14,7 @@ class View
     public static $actionName;
 
 
-    public static $viewBag = [];
+    public static $data;
 
     public static $html;
 
@@ -23,6 +23,7 @@ class View
      */
     public function __construct($model)
     {
+
         require 'Views'
             .DIRECTORY_SEPARATOR
             .self::$controllerName
@@ -31,5 +32,17 @@ class View
             .'.phtml';
     }
 
+    /**
+     * @return bool
+     */
+    public static function canUpgrade($waterTo,$foodTo,$water,$food){
+        $water = $water-$waterTo;
+        $food = $food-$foodTo;
+        if($food<0||$water<0){
+            return false;
+        }
+
+        return true;
+    }
 
 }

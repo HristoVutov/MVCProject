@@ -1,0 +1,8 @@
+<?php foreach(self::$data['map'] as $dot) :?>
+    <?php ?>
+    <?php if($dot[3]==0):?>
+        <a href="/MVCProject/map/profile/<?= $dot[1] ?>/<?= $dot[2] ?>">Unocuppied</a>
+    <?php else: ?>
+        <a href="/MVCProject/map/profile/<?= $dot[1] ?>/<?= $dot[2] ?>"><?= \MVCProject\Models\User::getUserById($dot[4])['username']; ?></a>
+    <?php endif; ?>
+<?php endforeach; ?>

@@ -1,0 +1,35 @@
+Name: <?= self::$data['user']['username'] ?>
+<form method="post">
+     <input type="radio" value="Attack" name="agrresion_type" onclick="loadAttack()">Attack
+    <div id="demoAttack"></div>
+    <br>
+     <input type="radio" value="Scout" name="agrresion_type" onclick="loadScout()">Scout
+     <div id="demo"></div>
+     <input type="submit" value="submit" name="submit">
+</form>
+
+<script>
+    function loadScout() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                document.getElementById("demoAttack").innerHTML = "";
+                document.getElementById("demo").innerHTML = "<input type=\"number\" name=\"numberOfScouts\" min=\"1\" max=\"100\">";
+            }
+        }
+        xhttp.open("GET", "", true);
+        xhttp.send();
+    }
+
+    function loadAttack() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                document.getElementById("demo").innerHTML = "";
+                document.getElementById("demoAttack").innerHTML = "<input type=\"number\" name=\"numberOfAnt\" min=\"1\" max=\"100\"><br><input type=\"number\" name=\"numberOfBullAnt\" min=\"1\" max=\"100\">";
+            }
+        }
+        xhttp.open("GET", "", true);
+        xhttp.send();
+    }
+</script>
