@@ -25,21 +25,22 @@ class Barracks
         mysqli_query($db, "INSERT INTO barrack (nest_id,level_id) VALUES ('" . $nestId . "','41')");
     }
 
-    public static function upgradeBarracks($barrackId,$level){
+    public static function upgradeBarracks($barrackId,$level,$building_type_id){
         $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
-        $request = mysqli_query($db, "SELECT * FROM levels WHERE level_to_id = 1 AND level = " . $level);
+        mysqli_query($db,"INSERT INTO upgrade_building (building_id,building_type_id) VALUES ('" . $barrackId . "','" . $building_type_id . "')");
+        var_dump($db->error_list);
+        $request = mysqli_query($db, "SELECT * FROM levels WHERE level_to_id = " . $building_type_id . " AND level = " . $level);
         $level_id = $request->fetch_all()[0];
-        var_dump($level_id);
-        mysqli_query($db,"UPDATE barrack SET level_id = '" . $level_id[0] . "' WHERE idbarrack = '" . $barrackId[0] ."'");
         User::updateResourceWaterAndFood($level_id[4],$level_id[3]);
+
     }
 
     public static function getNextLevel($level){
         $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
-        $request = mysqli_query($db, "SELECT * FROM levels WHERE id = " . $level);
+        $request = mysqli_query($db, "SELECT * FROM levels WHERE id = ".$level)->fetch_all()[0];
         $result = mysqli_query($db, "SELECT * FROM levels Join building_level_id bli
-         ON levels.level_to_id = bli.building_id WHERE building_name = 'Barrack'
-         AND level = " . ($request->fetch_all()[0][2]+1));
+         ON levels.level_to_id = bli.building_id WHERE level_to_id = " . $request[1] . "
+         AND level = " . ($request[2]+1));
         return $result;
     }
 

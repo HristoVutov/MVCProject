@@ -8,6 +8,8 @@
 
 namespace MVCProject\Controllers;
 use MVCProject\Models\Barracks;
+use MVCProject\Models\BattleReport;
+use MVCProject\Models\CronJobs;
 use MVCProject\Models\Nest;
 use MVCProject\Models\User;
 use MVCProject\View;
@@ -22,8 +24,8 @@ class HomeController extends BaseController
         $us = User::getUserById($_SESSION['id']);
         $us['nests'] = Nest::getUserNests($_SESSION['id']);
         View::$data['user'] = $us;
-
-        $model = new HomeViewModel();
+        $battles = BattleReport::getBattles();
+        $model = new HomeViewModel($battles);
         return new View($model);
     }
 

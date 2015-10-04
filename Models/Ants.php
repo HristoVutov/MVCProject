@@ -24,6 +24,15 @@ class Ants
         $request = mysqli_query($db, "SELECT * FROM ant WHERE name = '" . $antName . "'");
         return $request;
     }
+    public static function getAntsByUserId($userId){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $request = mysqli_query($db, "SELECT * FROM user_ants WHERE user_id =" .$userId  ." ORDER BY ant_id");
+        $antsQuantity = [];
+        while($row = $request->fetch_assoc()){
+            array_push($antsQuantity,$row['quantity']);
+        }
+        return $antsQuantity;
+    }
 
     public static function tryTrain($ant,$quantity){
         $user = User::getUserById($_SESSION['id']);
@@ -70,7 +79,7 @@ class Ants
 
             $antsToAdd = $ants[3]+$train[1];
             $trainId = $ants[0];
-            $isEmpty = empty(array_shift($ants));
+            $isEmpty = empty($ants);
             if($newNow>$time){
 
                 if($isEmpty){
@@ -88,5 +97,38 @@ class Ants
 
         }
 
+    }
+
+    public static function updateAnts($antId,$quantity){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $request = mysqli_query($db, "SELECT * FROM user_ants WHERE ant_id=" . $antId . " AND user_id=".$_SESSION['id'])->fetch_all();
+        $ant = $request[0];
+        $newQuantity = $ant[3]-$quantity;
+        mysqli_query($db,"UPDATE user_ants SET quantity=" . $newQuantity . " WHERE id =".$ant[0]);
+    }
+
+    public static function updateAntsPlus($antId,$quantity,$userId){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $request = mysqli_query($db, "SELECT * FROM user_ants WHERE ant_id=" . $antId . " AND user_id=".$userId)->fetch_all();
+        $ant = $request[0];
+        $newQuantity = $ant[3]+$quantity;
+        mysqli_query($db,"UPDATE user_ants SET quantity=" . $newQuantity . " WHERE id =".$ant[0]);
+    }
+
+    public static function updateAntsTo($antId,$quantity,$userID){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $request = mysqli_query($db, "SELECT * FROM user_ants WHERE ant_id=" . $antId . " AND user_id=".$userID)->fetch_all();
+        $ant = $request[0];
+        mysqli_query($db,"UPDATE user_ants SET quantity=" . $quantity . " WHERE id =".$ant[0]);
+    }
+
+    public static function UpdateAntsToZero($userId){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        mysqli_query($db,"UPDATE user_ants SET quantity=0 WHERE user_id =".$userId);
+    }
+
+    public static function updateTroops($antId,$quantity,$battleid){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        mysqli_query($db,"UPDATE troops_for_battle SET quantity=" . $quantity . " WHERE battleid =".$battleid . " AND ant_id = " .$antId);
     }
 }

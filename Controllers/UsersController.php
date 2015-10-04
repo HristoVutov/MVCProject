@@ -40,8 +40,10 @@ class UsersController extends BaseController
                         throw new \Exception('Username already exists');
                     } else {
                        if(User::tryReg($user, $pass)){
-                           Map::assignMap();
-                           header("Location: profile.php");
+                           $_SESSION['id'] = User::getUser($user)[0];
+                           for($i = 0;$i<2;$i++){Map::assignMap();}
+                           session_destroy();
+                           header("Location: /MVCProject/home/home");
                            exit;
                        }else{
                            throw new \Exception('Error occured during registration');
@@ -68,7 +70,12 @@ class UsersController extends BaseController
                 htmlspecialchars($pass = $_POST['password']);
                 if(User::tryLog($user,$pass)){
                     $_SESSION['id'] = User::getUser($user)[0];
+                    $nests = Nest::getUserNests($_SESSION['id']);
+                    if(empty($_SESSION['nestid'])){
+                        $_SESSION['nestid'] = $nests[0];
+                    }
                     header("Location: /MVCProject/home/home");
+                    exit;
 
                 }
                 else{

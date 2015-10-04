@@ -10,23 +10,26 @@ namespace MVCProject\ViewModels;
 
 class HomeViewModel
 {
-    private $id;
+    private $reports = [];
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getId()
+    public function getReports()
     {
-        return $this->id;
+        return $this->reports;
     }
 
     /**
-     * @return mixed
+     * HomeViewModel constructor.
+     * @param array $reports
      */
-    public function getName()
+    public function __construct(array $reports)
     {
-        return $this->name;
+        $this->reports = $reports;
     }
-    private $name;
+
+
+
 
 }

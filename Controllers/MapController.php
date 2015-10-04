@@ -8,8 +8,11 @@
 
 namespace MVCProject\Controllers;
 
+use MVCProject\Models\Action;
+use MVCProject\Models\CronJobs;
 use MVCProject\View;
 use MVCProject\Models\Map;
+use MVCProject\Models\Ants;
 use MVCProject\Models\User;
 use MVCProject\ViewModels\MapProfileViewModel;
 
@@ -30,15 +33,23 @@ class MapController
             $agrresionType = $_POST['agrresion_type'];
             if($agrresionType=='Scout'&&isset($_POST['numberOfScouts'])){
                 $scouts = $_POST['numberOfScouts'];
-                var_dump($scouts);
             }elseif($agrresionType=='Attack'&&isset($_POST['numberOfAnt'],$_POST['numberOfBullAnt'])){
-                $ants = $_POST['numberOfAnt'];
+                $ant = $_POST['numberOfAnt'];
                 $bull = $_POST['numberOfBullAnt'];
+                $ants = [];
+                $ants[0] = $bull;
+                $ants[1] = $ant;
+                Action::sendArmy($x,$y,$ants);
+                header("Location: /MVCProject/map/map");
+                exit;
             }
 
         }
 
-        $model = null;
+        //Action::checkForBattleStart();
+       // Action::checkForTroopReturn();
+        $ants = Ants::getAntsByUserId($_SESSION['id']);
+        $model = new MapProfileViewModel($x,$y,$ants);
         return new View($model);
     }
 }

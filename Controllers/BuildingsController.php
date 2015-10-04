@@ -44,7 +44,7 @@ class BuildingsController extends BaseController
             View::$data["ants"] = Ants::getAnts()->fetch_all();
 
             if(isset($_POST['Upgrade'])){
-                Barracks::upgradeBarracks($barrack[0],$upgradeLevelTo);
+                Barracks::upgradeBarracks($barrack[0][0],$upgradeLevelTo,1);
                 header("Location: /MVCProject/buildings/barrack");
                 exit;
             }
@@ -87,7 +87,33 @@ class BuildingsController extends BaseController
     }
 
     public static function nest(){
+        $us = User::getUserById($_SESSION['id']);
+        $nests = Nest::getUserNests($_SESSION['id']);
+        $us['nests'] = $nests;
+        View::$data['user'] = $us;
+        if(empty($_SESSION['nestid'])){
+            $_SESSION['nestid'] = $nests[0];
+        }
 
+        $nest = Nest::getNestsLevelID($_SESSION['nestid']);
+        $barrackNextLevel = Barracks::getNextLevel($nest[1])->fetch_assoc();
+
+        $upgradeWater = $barrackNextLevel['water'];
+        $upgradeFood = $barrackNextLevel['food'];
+        $upgradeLevelTo = $barrackNextLevel['level'];
+        View::$data["upgrade"]["water"] = $upgradeWater;
+        View::$data["upgrade"]["food"] = $upgradeFood;
+        View::$data["upgrade"]["levelto"] = $upgradeLevelTo;
+
+
+
+        if(isset($_POST['Upgrade'])){
+            Barracks::upgradeBarracks($nest[0],$upgradeLevelTo,2);
+            header("Location: /MVCProject/buildings/nest");
+            exit;
+        }
+        $model = null;
+        return new View($model);
     }
 
 

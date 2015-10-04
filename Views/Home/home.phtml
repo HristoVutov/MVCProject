@@ -5,11 +5,13 @@
 <div>
     User:
     <h3><?= self::$data['user']['username'] ?></h3>
-    Nest:  <select name="select_nest">
+    Nest:<select name="select_nest">
         <?php foreach (self::$data['user']['nests'] as $nest): ?>
-             <option value="<?= $nest ?>"><?= $nest ?></option>
+            <option value="<?= $nest ?>"><?= $nest ?></option>
         <?php endforeach; ;?>
     </select>
+
+
     <br>
     <br>
   Water:  <h3><?= self::$data['user']['water_resource'] ?></h3>
@@ -20,5 +22,9 @@
     <a href="../buildings/nest">nest</a>
     <a href="../map/map">map</a>
     <a href="../users/logout">logout</a>
+    <?php
+        MVCProject\ViewHelper\BattleReport::create()->setContent($model->getReports())->render();
+    ?>
 </div>
+
 <?php endif; ?>

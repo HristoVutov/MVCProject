@@ -1,0 +1,47 @@
+
+<div>
+    User:
+    <h3><?= self::$data['user']['username'] ?></h3>
+    <form method="post">
+        Nest:  <select name="select_nest">
+            <?php foreach (self::$data['user']['nests'] as $nest): ?>
+                <option value="<?= $nest ?>"><?= $nest ?></option>
+            <?php endforeach; ;?>
+        </select>
+        <input type="submit" name="nest_change" value="Change nest">
+    </form>
+    <br>
+    <br>
+    Water:  <h3><?= self::$data['user']['water_resource'] ?></h3>
+    Food:  <h3><?= self::$data['user']['food_resource'] ?></h3>
+    Dirt: <h3><?= self::$data['user']['dirt_resource'] ?></h3>
+    <hr>
+    <a href="../buildings/barrack">Barracks</a>
+    <a href="../buildings/nest">nest</a>
+    <a href="../home/home">home</a>
+    <a href="../map/map">map</a>
+</div>
+
+    <div>
+        <?php if(self::$data['upgrade']['levelto']!=10): ?>
+            Level: <?= self::$data['upgrade']['levelto']-1 ?>
+            Required resource to upgrade:
+            Water: <?= self::$data['upgrade']['water'] ?>
+            Food: <?= self::$data['upgrade']['food'] ?>
+        <?php else: ?>
+            Level: <?= self::$data['upgrade']['levelto']-1 ?>
+        <?php endif; ?>
+    </div>
+    <form method="post">
+        <?php if(self::$data['upgrade']['levelto']==10): ?>
+            <input type="submit" name="Upgrade" value="Max Upgrade Reached" disabled="disabled">
+        <?php else: ?>
+            <?php if(self::canUpgrade(self::$data['upgrade']['water'],self::$data['upgrade']['food'],self::$data['user']['water_resource'],self::$data['user']['food_resource'])): ?>
+                <input type="submit" name="Upgrade" value="Upgrade Nest" >
+            <?php else: ?>
+                <input type="submit" name="Upgrade" value="Not Enought Resource" disabled="disabled">
+            <?php endif; ?>
+        <?php endif; ?>
+    </form>
+
+

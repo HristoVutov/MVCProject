@@ -66,7 +66,7 @@ class User
 
 
 
-
+    //$db = mysqli_connect("antwarsc_antwars","c8ev6mfMK8vy","antwarsc_antwar");
     //$db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
     //$result = mysqli_query($db, "SELECT * FROM user WHERE username = '" . $user ."'");
 
@@ -75,6 +75,7 @@ class User
      */
     public static function getAll()
     {
+
         $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
         $result = mysqli_query($db, "SELECT * FROM user");
         mysqli_close($db);
@@ -93,6 +94,12 @@ class User
         $result = mysqli_query($db, "SELECT * FROM user WHERE iduser = '" . $username ."'");
         mysqli_close($db);
         return $result->fetch_assoc();
+    }
+
+    public static function getUserByMapCords($x,$y){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $result = mysqli_query($db, "SELECT ocuppied_by FROM map WHERE x = '" . $x ."' AND y = ".$y);
+        return $result->fetch_all();
     }
 
     public static function isRegistered($username){

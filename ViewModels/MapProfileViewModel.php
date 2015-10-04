@@ -13,16 +13,18 @@ class MapProfileViewModel
 {
     private $x;
     private $y;
+    private $ants = [];
 
     /**
      * ProfileViewModel constructor.
      * @param $x
      * @param $y
      */
-    public function __construct($x, $y)
+    public function __construct($x, $y,$ants = [])
     {
         $this->x = $x;
         $this->y = $y;
+        $this->ants = $ants;
     }
 
     /**
@@ -39,6 +41,14 @@ class MapProfileViewModel
     public function getY()
     {
         return $this->y;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAnts()
+    {
+        return $this->ants;
     }
 
 }

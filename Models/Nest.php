@@ -24,11 +24,23 @@ class Nest
 
     public static function getUserNests($userId){
         $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
-        $result = mysqli_query($db, "SELECT idnest FROM nest WHERE id_owner = 5");
+        $result = mysqli_query($db, "SELECT idnest FROM nest WHERE id_owner = ".$userId);
         $nests = [];
         while($row = $result->fetch_assoc()){
             array_push($nests,$row['idnest']);
         }
         return $nests;
     }
+    public static function getNestsLevelID($nestId){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $result = mysqli_query($db, "SELECT * FROM nest WHERE idnest = ".$nestId);
+        return $result->fetch_all()[0];
+    }
+    public static function getNestCords($nestId){
+        $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
+        $result = mysqli_query($db, "SELECT m.x FROM nest n JOIN map m ON n.map_id=m.map_id WHERE n.idnest =".$nestId);
+        return $result->fetch_all()[0][0];
+    }
+
+
 }

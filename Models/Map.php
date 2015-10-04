@@ -34,13 +34,13 @@ class Map
 
     public static function assignMap(){
         $db = mysqli_connect("localhost", "root", "1234", "ant_rpg");
-        for($i = 0; $i < 2; $i++) {
-            $result = mysqli_query($db, "SELECT * FROM map WHERE ocuppied = 0");
-            $rows = $result->fetch_all();
-            $idToAssign = rand(0, count($rows));
-            $update = mysqli_query($db, "UPDATE map SET ocuppied=1,ocuppied_by='" . $_SESSION['id'] . "' WHERE map_id='" . $rows[$idToAssign][0] . "'");
-            Nest::createNest($rows[$idToAssign][0]);
-            mysqli_close($db);
-        }
+        $result = mysqli_query($db, "SELECT * FROM map WHERE ocuppied = 0");
+        $rows = $result->fetch_all();
+        $idToAssign = rand(0, count($rows));
+        $update = mysqli_query($db, "UPDATE map SET ocuppied=1,ocuppied_by='" . $_SESSION['id'] . "' WHERE map_id='" . $rows[$idToAssign][0] . "'");
+        Nest::createNest($rows[$idToAssign][0]);
+        mysqli_close($db);
     }
+
+
 }

@@ -1,4 +1,7 @@
-Name: <?= self::$data['user']['username'] ?>
+Name: <?= self::$data['user']['username'] ?><br>
+X: <?= $model->getX()?><br>
+Y: <?= $model->getY() ?>
+
 <form method="post">
      <input type="radio" value="Attack" name="agrresion_type" onclick="loadAttack()">Attack
     <div id="demoAttack"></div>
@@ -7,6 +10,11 @@ Name: <?= self::$data['user']['username'] ?>
      <div id="demo"></div>
      <input type="submit" value="submit" name="submit">
 </form>
+
+<a href="../buildings/barrack">Barracks</a>
+<a href="../buildings/nest">nest</a>
+<a href="../home/home">home</a>
+<a href="../map/map">map</a>
 
 <script>
     function loadScout() {
@@ -26,7 +34,10 @@ Name: <?= self::$data['user']['username'] ?>
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 document.getElementById("demo").innerHTML = "";
-                document.getElementById("demoAttack").innerHTML = "<input type=\"number\" name=\"numberOfAnt\" min=\"1\" max=\"100\"><br><input type=\"number\" name=\"numberOfBullAnt\" min=\"1\" max=\"100\">";
+                document.getElementById("demoAttack").innerHTML = "Bull: <input type=\"number\" name=\"numberOfBullAnt\" min=\"1\" max=\"<?=$model->getAnts()[0]?>\">" +
+                    "<br>" +
+                    "Ant: <input type=\"number\" name=\"numberOfAnt\" min=\"1\" max=\"<?=$model->getAnts()[1]?>\">";
+
             }
         }
         xhttp.open("GET", "", true);
